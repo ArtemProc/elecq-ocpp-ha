@@ -65,6 +65,45 @@ views:
         column_span: 2
         cards:
           - type: heading
+            heading: Telemetry
+            icon: mdi:meter-electric
+            heading_style: subtitle
+          - type: tile
+            entity: sensor.elecq_au101_charger_effective_limit
+            name: Effective Limit
+            icon: mdi:speedometer
+          - type: tile
+            entity: sensor.elecq_au101_charger_current_l1
+            name: Current L1
+            icon: mdi:current-ac
+          - type: tile
+            entity: sensor.elecq_au101_charger_current_l2
+            name: Current L2
+            icon: mdi:current-ac
+          - type: tile
+            entity: sensor.elecq_au101_charger_current_l3
+            name: Current L3
+            icon: mdi:current-ac
+          - type: tile
+            entity: sensor.elecq_au101_charger_voltage
+            name: Voltage
+            icon: mdi:flash
+          - type: tile
+            entity: sensor.elecq_au101_charger_frequency
+            name: Frequency
+            icon: mdi:waveform
+          - type: tile
+            entity: sensor.elecq_au101_charger_temperature
+            name: Temperature
+            icon: mdi:thermometer
+          - type: tile
+            entity: sensor.elecq_au101_charger_power_factor
+            name: Power Factor
+            icon: mdi:angle-acute
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
             heading: Power history
             icon: mdi:chart-line
             heading_style: subtitle

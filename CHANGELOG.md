@@ -1,5 +1,8 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.1.2 – Dashboard telemetry
+- Added a Telemetry section to the bundled dashboard with effective limit, per-phase current, voltage, frequency, temperature, and power factor
+
 ## v1.1.1 – Telemetry correctness
 - Fixed Kelvin temperature normalization
 - Fixed fallback-location aggregation so readings from different probes are not mixed

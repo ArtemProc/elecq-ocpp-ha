@@ -16,6 +16,14 @@ EXPECTED_ENTITIES = {
     "binary_sensor.elecq_au101_charger_plugged_in",
     "binary_sensor.elecq_au101_charger_charging",
     "switch.elecq_au101_charger_remote_charging",
+    "sensor.elecq_au101_charger_current_l1",
+    "sensor.elecq_au101_charger_current_l2",
+    "sensor.elecq_au101_charger_current_l3",
+    "sensor.elecq_au101_charger_voltage",
+    "sensor.elecq_au101_charger_frequency",
+    "sensor.elecq_au101_charger_temperature",
+    "sensor.elecq_au101_charger_power_factor",
+    "sensor.elecq_au101_charger_effective_limit",
 }
 
 ALLOWED_CARDS = {"heading", "gauge", "tile", "history-graph"}
@@ -61,10 +69,12 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual(gauges[0]["min"], 0)
         self.assertTrue(gauges[0]["needle"])
 
-    def test_three_sections_have_expected_widths(self):
+    def test_four_sections_have_expected_widths(self):
         sections = self.data["views"][0]["sections"]
-        self.assertEqual(len(sections), 3)
-        self.assertEqual([section["column_span"] for section in sections], [1, 1, 2])
+        self.assertEqual(len(sections), 4)
+        self.assertEqual(
+            [section["column_span"] for section in sections], [1, 1, 2, 2]
+        )
 
     def test_no_grid_or_layout_options_anywhere(self):
         def keys(node):

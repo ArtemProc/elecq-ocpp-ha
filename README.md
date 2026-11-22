@@ -160,7 +160,8 @@ in control.
 # 🖥 Dashboard
 
 A ready-to-paste dashboard ships with the integration. It uses only built-in Home
-Assistant cards and the nine default entity IDs above.
+Assistant cards and the default entity IDs above. The Telemetry section shows the
+effective limit and live electrical values read-only.
 
 ## Install (UI)
 
