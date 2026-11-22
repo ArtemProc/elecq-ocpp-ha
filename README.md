@@ -1,12 +1,11 @@
 # Elecq AU101/AE106 OCPP – Home Assistant Custom Integration
 
 <p>
-  <img src="https://raw.githubusercontent.com/BashTheDog/elecq-ocpp-ha/main/assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
+  <img src="assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
 </p>
 
-[![GitHub Release](https://img.shields.io/github/v/release/BashTheDog/elecq-ocpp-ha?style=for-the-badge)](https://github.com/BashTheDog/elecq-ocpp-ha/releases)
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-blue.svg?style=for-the-badge)](https://hacs.xyz/)
-[![GitHub Stars](https://img.shields.io/github/stars/BashTheDog/elecq-ocpp-ha?style=for-the-badge)](https://github.com/BashTheDog/elecq-ocpp-ha/stargazers)
+[![Gitea](https://img.shields.io/badge/Gitea-self--hosted-blue?style=for-the-badge)](https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha)
+[![Dashboard HA](https://img.shields.io/badge/Dashboard-HA%202024.10%2B-blue?style=for-the-badge)](https://www.home-assistant.io/)
 
 ---
 
@@ -29,7 +28,7 @@ This integration provides:
 # 🖼 Integration Logo (Smaller)
 
 <p>
-  <img src="https://raw.githubusercontent.com/BashTheDog/elecq-ocpp-ha/main/assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
+  <img src="assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
 </p>
 
 ---
@@ -64,17 +63,14 @@ This integration provides:
 
 # 📦 Installation
 
-## Option A — HACS (Custom Repository)
+## Option A — HACS / Marketplace
 
-1. Open **HACS → Integrations**
-2. Add custom repository:
+HACS and the Home Assistant Marketplace only install from **public GitHub**
+repositories. This project is hosted on Gitea, so they cannot install it
+directly. Use **Option B** below, or a Gitea-aware installer such as HAIGS.
 
-```
-https://github.com/BashTheDog/elecq-ocpp-ha
-```
-
-3. Select category: **Integration**
-4. Install & restart Home Assistant
+If you keep a GitHub mirror of this repository, add that mirror's URL to HACS
+instead and select category: **Integration**.
 
 ---
 
@@ -114,7 +110,7 @@ Open **Settings → Devices & Services → Add Integration → Elecq OCPP**
 In the Elecq mobile app, set:
 
 ```
-ws://<home-assistant-ip>:9006/AU101B2G00127D
+ws://<home-assistant-ip>:9006/<charger-serial>
 ```
 
 OCPP Version: **2.0.1**
@@ -158,7 +154,7 @@ Assistant cards and the nine default entity IDs above.
 5. Select **Save**.
 
 The file is installed with the integration. You can also copy it from GitHub:
-[elecq_ocpp.yaml](https://github.com/BashTheDog/elecq-ocpp-ha/blob/main/custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml).
+[elecq_ocpp.yaml](https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha/src/branch/main/custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml).
 
 ## Install (YAML mode)
 
@@ -190,7 +186,7 @@ lovelace:
 # 🛠 Development
 
 ```bash
-git clone https://github.com/BashTheDog/elecq-ocpp-ha
+git clone https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha.git
 ```
 
 ---

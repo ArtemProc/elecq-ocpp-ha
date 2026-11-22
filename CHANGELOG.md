@@ -1,5 +1,10 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.0.4 – Dashboard
+- Added a ready-to-paste dashboard using only built-in Home Assistant cards
+- Corrected the documented entity IDs
+- Documentation now points to the Gitea repository
+
 ## v1.0.0 – Initial Release
 - Full OCPP 2.0.1 WebSocket server embedded in Home Assistant
 - Real-time charger status updates

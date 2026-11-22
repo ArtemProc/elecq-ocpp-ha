@@ -1,6 +1,6 @@
 # Elecq AU101 OCPP – Home Assistant Integration
 
-<img src="https://raw.githubusercontent.com/BashTheDog/elecq-ocpp-ha/main/assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
+<img src="assets/elecq_badge_square.png" width="160" alt="Elecq Logo">
 
 A fully local Home Assistant integration for the **Elecq AU101** EV Charger using an embedded **OCPP 2.0.1 WebSocket server**.
 
@@ -13,15 +13,17 @@ This integration enables real-time OCPP communication:
 - No cloud dependency
 - Grey-out switch while waiting for responses
 
-## Installation (HACS Custom Repository)
+## Installation
 
-Add this URL in HACS → Integrations → Custom repositories:
+This project is hosted on Gitea:
 
 ```
-https://github.com/BashTheDog/elecq-ocpp-ha
+https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha.git
 ```
 
-Category: **Integration**
+HACS and the Marketplace only install from public GitHub, so copy
+`custom_components/elecq_ocpp` into your Home Assistant config folder and
+restart. See the README for the full steps.
 
 ## Configuration
 
@@ -38,7 +40,7 @@ After installation:
 Configure your Elecq AU101 charger with:
 
 ```
-ws://<home-assistant-ip>:9006/AU101B2G00127D
+ws://<home-assistant-ip>:9006/<charger-serial>
 ```
 
 OCPP Version: **2.0.1**
@@ -69,7 +71,7 @@ See the README for installation steps and the 22 kW gauge adjustment.
 ## Support
 
 Issues & feature requests:  
-https://github.com/BashTheDog/elecq-ocpp-ha/issues
+https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha/issues
 
 ## License
 

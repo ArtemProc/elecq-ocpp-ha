@@ -3,8 +3,8 @@
   "name": "Elecq OCPP",
   "codeowners": ["@BashTheDog"],
   "version": "1.0.4",
-  "documentation": "https://github.com/BashTheDog/elecq-ocpp-ha",
-  "issue_tracker": "https://github.com/BashTheDog/elecq-ocpp-ha/issues",
+  "documentation": "https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha",
+  "issue_tracker": "https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha/issues",
   "dependencies": [],
   "requirements": [
     "ocpp==0.16.0",
