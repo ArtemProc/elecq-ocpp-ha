@@ -1,5 +1,9 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.0.6 – Dependency fix
+- Fixed config flow failing on current Home Assistant by updating `ocpp` to 2.1.0
+- `ocpp` 0.16.0 imported `jsonschema._validators`, which newer jsonschema versions removed
+
 ## v1.0.5 – Branding
 - Removed BashTheDog branding from the integration badge image
 
