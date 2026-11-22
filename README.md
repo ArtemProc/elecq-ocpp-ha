@@ -178,7 +178,8 @@ lovelace:
 
 ## Notes
 
-- The dashboard uses a **sections** view, which requires Home Assistant **2024.3** or newer.
+- The dashboard uses **sections** with **heading cards**, which requires Home Assistant **2024.10** or newer
+  (heading cards were added in 2024.10).
 - The gauge maximum is `22` kW, matching the AE104. If your charger is 7.4 kW or 11 kW,
   change `max: 22` in the gauge card to `7.4` or `11` so the gauge reads usefully.
 - If you renamed the device or any entity, update the nine IDs in the YAML (or use your

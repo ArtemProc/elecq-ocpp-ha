@@ -38,7 +38,7 @@ The integration creates nine entities but ships no dashboard. The only example i
 
 ## Constraints
 
-- The `sections` view requires Home Assistant 2024.3 or newer. The integration's own minimum stays at 2024.1; the README will state the dashboard requirement.
+- The dashboard's `heading` cards require Home Assistant 2024.10 or newer (the sections view itself is 2024.3+, but heading cards were added in 2024.10). The integration's own minimum stays at 2024.1; the README states the dashboard requirement.
 - Default entity IDs come from the hardcoded device name `Elecq AU101 Charger` plus each entity name. For a fresh install that gives:
 
 | Entity | Default ID |
@@ -87,7 +87,7 @@ Card names override the integration's entity names where they are unclear (`Info
 
 - Parse the dashboard YAML with PyYAML; fail on syntax errors.
 - Check every referenced entity ID is in the expected nine-ID set, and that card types are limited to the four built-in cards above.
-- Paste the file into a Home Assistant 2024.3+ instance with the integration and confirm all cards render, the switch toggles, and the history graph populates.
+- Paste the file into a Home Assistant 2024.10+ instance with the integration and confirm all cards render, the switch toggles, and the history graph populates.
 - Confirm the README instructions work from a clean dashboard and that the old stale snippet is gone.
 
 ## Left to the builder

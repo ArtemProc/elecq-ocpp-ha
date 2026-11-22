@@ -28,15 +28,15 @@
   - `switch.elecq_au101_charger_remote_charging`
 - View must be `type: sections` with `max_columns: 2`; sections use `column_span` 1, 1, and 2.
 - Gauge is `min: 0`, `max: 22`, `needle: true`.
-- Do not add `grid_options`; defaults keep the file compatible with the documented HA 2024.3 floor.
-- Documentation must say the dashboard needs HA 2024.3+, how to adjust the gauge for 7.4/11 kW chargers, and how to fix renamed entity IDs.
+- Do not add `grid_options`; defaults keep the file compatible with the documented HA 2024.10 floor.
+- Documentation must say the dashboard needs HA 2024.10+ (heading cards), how to adjust the gauge for 7.4/11 kW chargers, and how to fix renamed entity IDs.
 
 ## Review Focus
 
 - **Renamed entity IDs:** a user who renamed a device/entity sees unavailable cards. The exact-ID test in Task 1 pins the default contract; Task 2 documents the find/replace fallback and verifies the wording exists.
 - **Gauge scale on non-22 kW chargers:** a 7.4/11 kW owner sees an almost-empty gauge. Task 1 pins `max: 22`; Task 2 must document changing it and the verification greps for the 7.4/11 wording.
 - **HACS install location:** a dashboard at repo root never reaches HACS users. Task 1 asserts the file is under `custom_components/elecq_ocpp/dashboards/`.
-- **Older Home Assistant:** a 2024.1/2024.2 user gets a broken view. Task 2 documents the 2024.3 requirement and the verification greps for it.
+- **Older Home Assistant:** a user older than 2024.10 gets broken heading cards. Task 2 documents the 2024.10 requirement and the verification greps for it.
 - **Narrow screens:** two side-by-side sections must stack on a phone. Task 1 includes a manual narrow-viewport check; this is the one item with no automated test.
 
 ---
@@ -177,7 +177,7 @@ Expected: 4 tests, `OK`.
 
 - [ ] **Step 5: Manual render check (narrow and wide)**
 
-In a Home Assistant 2024.3+ instance with the integration configured, create a dashboard and paste the YAML into the raw configuration editor. Confirm:
+In a Home Assistant 2024.10+ instance with the integration configured, create a dashboard and paste the YAML into the raw configuration editor. Confirm:
 - Wide window: Control and Details are side by side; History spans the width below.
 - Phone-width window: sections stack vertically.
 - The switch toggles and the history graph draws two lines.
@@ -214,7 +214,7 @@ Replace `# 🖥 Example Lovelace Card` (the YAML block with `vertical-stack`) wi
 - Short intro: a ready-to-paste dashboard ships with the integration.
 - **Install (UI):** Settings → Dashboards → Add dashboard → New dashboard from scratch → open it → Edit dashboard → Take control if prompted → three-dot menu → Raw configuration editor → replace everything with the contents of `custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml` → Save.
 - **Alternative (YAML mode):** show the `lovelace:` `dashboards:` entry with `mode: yaml`, `filename: dashboards/elecq_ocpp.yaml`, `title: Elecq`, `icon: mdi:ev-station`, and say to copy the file there first.
-- **Requirements note:** sections view needs Home Assistant 2024.3+.
+- **Requirements note:** heading cards need Home Assistant 2024.10+ (the sections view itself is 2024.3+).
 - **Gauge note:** `max: 22` matches a 22 kW charger; change it to `7.4` or `11` if yours is smaller.
 - **Renamed entities note:** if you renamed the device or entities, update the nine IDs in the YAML (or use your own entity IDs); the defaults are listed in the Entities section.
 - A link to the file on GitHub: `https://github.com/BashTheDog/elecq-ocpp-ha/blob/main/custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml`.
@@ -235,7 +235,7 @@ Run these commands from the repository root:
 ```bash
 grep -q "custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml" README.md
 grep -q "sensor.elecq_au101_charger_power" README.md
-grep -q "2024.3" README.md
+grep -q "2024.10" README.md
 grep -q "7.4" README.md
 grep -q "## Dashboard" info.md
 ! grep -q "sensor.elecq_au101_power" README.md info.md

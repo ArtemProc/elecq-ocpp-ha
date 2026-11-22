@@ -61,6 +61,30 @@ class DashboardTest(unittest.TestCase):
         self.assertEqual(gauges[0]["min"], 0)
         self.assertTrue(gauges[0]["needle"])
 
+    def test_three_sections_have_expected_widths(self):
+        sections = self.data["views"][0]["sections"]
+        self.assertEqual(len(sections), 3)
+        self.assertEqual([section["column_span"] for section in sections], [1, 1, 2])
+
+    def test_no_grid_or_layout_options_anywhere(self):
+        def keys(node):
+            if isinstance(node, dict):
+                yield from node
+                for value in node.values():
+                    yield from keys(value)
+            elif isinstance(node, list):
+                for item in node:
+                    yield from keys(item)
+
+        found = set(keys(self.data))
+        self.assertNotIn("grid_options", found)
+        self.assertNotIn("layout_options", found)
+
+    def test_readme_requires_the_heading_card_floor(self):
+        readme = (ROOT / "README.md").read_text()
+        self.assertIn("2024.10", readme)
+        self.assertNotIn("2024.3", readme)
+
 
 if __name__ == "__main__":
     unittest.main()
