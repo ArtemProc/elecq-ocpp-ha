@@ -123,16 +123,19 @@ OCPP Version: **2.0.1**
 
 # 🧩 Entities
 
+The integration always creates the same nine entities. Entity IDs use the device name
+`Elecq AU101 Charger`, so each ID is prefixed with `elecq_au101_charger_`.
+
 ### Sensors
-- `sensor.elecq_au101_status`
-- `sensor.elecq_au101_charging_state`
-- `sensor.elecq_au101_power`
-- `sensor.elecq_au101_power_smoothed`
-- `sensor.elecq_au101_energy`
-- `sensor.elecq_au101_session_energy`
+- `sensor.elecq_au101_charger_power`
+- `sensor.elecq_au101_charger_power_smoothed`
+- `sensor.elecq_au101_charger_total_energy`
+- `sensor.elecq_au101_charger_session_energy`
+- `sensor.elecq_au101_charger_charger_status` (registry name "Charger Status", hence `charger_charger`)
+- `sensor.elecq_au101_charger_info` (charging state; registry name "Info")
 
 ### Binary Sensors
-- `binary_sensor.elecq_au101_plugged_in`
+- `binary_sensor.elecq_au101_charger_plugged_in`
 - `binary_sensor.elecq_au101_charger_charging`
 
 ### Switch
@@ -140,37 +143,46 @@ OCPP Version: **2.0.1**
 
 ---
 
-# 🖥 Example Lovelace Card
+# 🖥 Dashboard
+
+A ready-to-paste dashboard ships with the integration. It uses only built-in Home
+Assistant cards and the nine default entity IDs above.
+
+## Install (UI)
+
+1. Go to **Settings → Dashboards → Add dashboard → New dashboard from scratch**.
+2. Open the new dashboard, select **Edit dashboard**, and take control if prompted.
+3. Open the three-dot menu and choose **Raw configuration editor**.
+4. Replace everything with the contents of
+   `custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml`.
+5. Select **Save**.
+
+The file is installed with the integration. You can also copy it from GitHub:
+[elecq_ocpp.yaml](https://github.com/BashTheDog/elecq-ocpp-ha/blob/main/custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml).
+
+## Install (YAML mode)
+
+If you manage dashboards in YAML, copy the file to `dashboards/elecq_ocpp.yaml` in
+your Home Assistant config folder, then add:
 
 ```yaml
-type: vertical-stack
-cards:
-  - type: entities
-    title: Elecq AU101/AE106
-    entities:
-      - entity: sensor.elecq_au101_status
-      - entity: sensor.elecq_au101_charging_state
-
-  - type: grid
-    square: false
-    columns: 3
-    cards:
-      - type: entity
-        entity: binary_sensor.elecq_au101_plugged_in
-      - type: entity
-        entity: binary_sensor.elecq_au101_charger_charging
-      - type: entity
-        entity: switch.elecq_au101_charger_remote_charging
-
-  - type: grid
-    square: false
-    columns: 2
-    cards:
-      - type: entity
-        entity: sensor.elecq_au101_session_energy
-      - type: entity
-        entity: sensor.elecq_au101_power
+lovelace:
+  dashboards:
+    elecq:
+      mode: yaml
+      title: Elecq
+      icon: mdi:ev-station
+      show_in_sidebar: true
+      filename: dashboards/elecq_ocpp.yaml
 ```
+
+## Notes
+
+- The dashboard uses a **sections** view, which requires Home Assistant **2024.3** or newer.
+- The gauge maximum is `22` kW, matching the AE104. If your charger is 7.4 kW or 11 kW,
+  change `max: 22` in the gauge card to `7.4` or `11` so the gauge reads usefully.
+- If you renamed the device or any entity, update the nine IDs in the YAML (or use your
+  own entity IDs). The defaults are listed in the Entities section above.
 
 ---
 

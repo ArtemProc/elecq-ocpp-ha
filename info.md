@@ -60,30 +60,11 @@ OCPP Version: **2.0.1**
 ### Switch
 - Remote Charging Control
 
-## Example Lovelace Card
+## Dashboard
 
-```
-type: vertical-stack
-cards:
-  - type: entities
-    title: Elecq AU101
-    entities:
-      - sensor.elecq_au101_status
-      - sensor.elecq_au101_charging_state
-  - type: grid
-    square: false
-    columns: 3
-    cards:
-      - entity: binary_sensor.elecq_au101_plugged_in
-      - entity: binary_sensor.elecq_au101_charger_charging
-      - entity: switch.elecq_au101_charger_remote_charging
-  - type: grid
-    square: false
-    columns: 2
-    cards:
-      - entity: sensor.elecq_au101_session_energy
-      - entity: sensor.elecq_au101_power
-```
+A ready-to-paste dashboard using only built-in Home Assistant cards ships with the integration.
+Paste `custom_components/elecq_ocpp/dashboards/elecq_ocpp.yaml` into a new dashboard's raw configuration editor.
+See the README for installation steps and the 22 kW gauge adjustment.
 
 ## Support
 
