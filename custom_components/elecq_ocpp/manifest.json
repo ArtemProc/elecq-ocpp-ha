@@ -2,7 +2,7 @@
   "domain": "elecq_ocpp",
   "name": "Elecq OCPP",
   "codeowners": ["@BashTheDog"],
-  "version": "1.0.6",
+  "version": "1.1.0",
   "documentation": "https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha",
   "issue_tracker": "https://gitea.ap6.xyz:3000/home/elecq-ocpp-ha/issues",
   "dependencies": [],

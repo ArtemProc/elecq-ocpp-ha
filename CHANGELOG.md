@@ -1,5 +1,11 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.1.0 – Read-only telemetry
+- Added read-only current, voltage, frequency, temperature, and power-factor sensors
+- Added an `Effective Limit` sensor from the charger's composite schedule
+- Added a diagnostic `Meter Values` sensor with every raw sampled value
+- No control messages were added; the charger's Power Monitor remains in control
+
 ## v1.0.6 – Dependency fix
 - Fixed config flow failing on current Home Assistant by updating `ocpp` to 2.1.0
 - `ocpp` 0.16.0 imported `jsonschema._validators`, which newer jsonschema versions removed

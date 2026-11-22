@@ -119,7 +119,7 @@ OCPP Version: **2.0.1**
 
 # 🧩 Entities
 
-The integration always creates the same nine entities. Entity IDs use the device name
+The integration always creates the same core entities. Entity IDs use the device name
 `Elecq AU101 Charger`, so each ID is prefixed with `elecq_au101_charger_`.
 
 ### Sensors
@@ -129,6 +129,15 @@ The integration always creates the same nine entities. Entity IDs use the device
 - `sensor.elecq_au101_charger_session_energy`
 - `sensor.elecq_au101_charger_charger_status` (registry name "Charger Status", hence `charger_charger`)
 - `sensor.elecq_au101_charger_info` (charging state; registry name "Info")
+- `sensor.elecq_au101_charger_current_l1`
+- `sensor.elecq_au101_charger_current_l2`
+- `sensor.elecq_au101_charger_current_l3`
+- `sensor.elecq_au101_charger_voltage`
+- `sensor.elecq_au101_charger_frequency`
+- `sensor.elecq_au101_charger_temperature`
+- `sensor.elecq_au101_charger_power_factor`
+- `sensor.elecq_au101_charger_effective_limit`
+- `sensor.elecq_au101_charger_meter_values` (diagnostic)
 
 ### Binary Sensors
 - `binary_sensor.elecq_au101_charger_plugged_in`
@@ -136,6 +145,15 @@ The integration always creates the same nine entities. Entity IDs use the device
 
 ### Switch
 - `switch.elecq_au101_charger_remote_charging`
+
+### Read-only telemetry
+
+The new sensors are observations only. `Effective Limit` comes from the charger's
+`GetCompositeSchedule` response and exposes the schedule periods; if the charger
+rejects the query, its `status` attribute explains why. Raw sampled values are on
+the diagnostic `Meter Values` sensor. The integration does not call
+`SetChargingProfile` or `SetVariables`, so the charger's own Power Monitor remains
+in control.
 
 ---
 

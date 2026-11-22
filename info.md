@@ -12,6 +12,7 @@ This integration enables real-time OCPP communication:
 - Full OCPP 2.0.1 transaction handling
 - No cloud dependency
 - Grey-out switch while waiting for responses
+- Read-only electrical telemetry and charger schedule visibility
 
 ## Installation
 
