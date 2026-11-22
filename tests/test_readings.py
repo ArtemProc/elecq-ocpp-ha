@@ -206,5 +206,155 @@ class EffectiveLimitTest(unittest.TestCase):
         self.assertEqual(readings.effective_limit(None, datetime.now(UTC)), (None, [], False))
 
 
+
+class AdditionalNormalizationTest(unittest.TestCase):
+    def test_standard_kelvin_unit(self):
+        values, _ = readings.normalize_meter_values(
+            [
+                {
+                    "timestamp": "2026-11-22T10:00:00Z",
+                    "sampled_value": [
+                        {
+                            "value": "273.15",
+                            "measurand": "Temperature",
+                            "unit_of_measure": {"unit": "K"},
+                        }
+                    ],
+                }
+            ]
+        )
+        self.assertAlmostEqual(values["Temperature|-|Outlet"]["value"], 0.0)
+        self.assertEqual(values["Temperature|-|Outlet"]["unit"], "Celsius")
+
+    def test_multiplier_is_applied(self):
+        values, _ = readings.normalize_meter_values(
+            [
+                {
+                    "timestamp": "2026-11-22T10:00:00Z",
+                    "sampled_value": [
+                        {
+                            "value": "12.5",
+                            "measurand": "Energy.Active.Import.Register",
+                            "unit_of_measure": {"unit": "kWh", "multiplier": 1},
+                        }
+                    ],
+                }
+            ]
+        )
+        self.assertEqual(
+            values["Energy.Active.Import.Register|-|Outlet"]["value"], 125000.0
+        )
+
+    def test_milliamp_and_millivolt(self):
+        values, _ = readings.normalize_meter_values(
+            [
+                {
+                    "timestamp": "2026-11-22T10:00:00Z",
+                    "sampled_value": [
+                        {
+                            "value": "16000",
+                            "measurand": "Current.Import",
+                            "phase": "L1",
+                            "unit_of_measure": {"unit": "mA"},
+                        },
+                        {
+                            "value": "230000",
+                            "measurand": "Voltage",
+                            "phase": "L1",
+                            "unit_of_measure": {"unit": "mV"},
+                        },
+                    ],
+                }
+            ]
+        )
+        self.assertEqual(values["Current.Import|L1|Outlet"]["value"], 16.0)
+        self.assertEqual(values["Voltage|L1|Outlet"]["value"], 230.0)
+
+    def test_unknown_measurand_is_retained(self):
+        values, _ = readings.normalize_meter_values(
+            [
+                {
+                    "timestamp": "2026-11-22T10:00:00Z",
+                    "sampled_value": [
+                        {
+                            "value": "7",
+                            "measurand": "Vendor.Metric",
+                            "unit_of_measure": {"unit": "x"},
+                        }
+                    ],
+                }
+            ]
+        )
+        self.assertEqual(values["Vendor.Metric|-|Outlet"]["value"], 7.0)
+        self.assertEqual(values["Vendor.Metric|-|Outlet"]["unit"], "x")
+
+
+class FallbackLocationTest(unittest.TestCase):
+    def test_fallback_location_does_not_mix_locations(self):
+        values = {
+            "Voltage|L1|Body": {"value": 100.0},
+            "Voltage|L1|Inlet": {"value": 230.0},
+        }
+        self.assertEqual(readings.find_value(values, "Voltage"), 100.0)
+
+
+class EffectiveScheduleSelectionTest(unittest.TestCase):
+    def setUp(self):
+        self.schedule = {"schedule_start": "2026-11-22T10:00:00+00:00"}
+        self.fallback = {"schedule_start": "2026-11-22T09:00:00+00:00"}
+
+    def test_accepted_schedule_is_used(self):
+        self.assertEqual(
+            readings.select_effective_schedule(
+                self.schedule, "Accepted", self.fallback
+            ),
+            (self.schedule, "CompositeSchedule"),
+        )
+
+    def test_disconnected_schedule_is_still_used(self):
+        self.assertEqual(
+            readings.select_effective_schedule(
+                self.schedule, "Disconnected", self.fallback
+            ),
+            (self.schedule, "CompositeSchedule"),
+        )
+
+    def test_rejected_schedule_falls_back(self):
+        self.assertEqual(
+            readings.select_effective_schedule(
+                self.schedule, "Rejected", self.fallback
+            ),
+            (self.fallback, "NotifyChargingLimit"),
+        )
+
+    def test_error_schedule_falls_back(self):
+        self.assertEqual(
+            readings.select_effective_schedule(self.schedule, "Error", self.fallback),
+            (self.fallback, "NotifyChargingLimit"),
+        )
+
+    def test_no_schedule_returns_none(self):
+        self.assertEqual(
+            readings.select_effective_schedule(None, None, None), (None, None)
+        )
+
+
+class NotificationHandlerSourceTest(unittest.TestCase):
+    def test_notification_handlers_use_the_guarded_poll_loop(self):
+        source = (
+            Path(__file__).resolve().parents[1]
+            / "custom_components"
+            / "elecq_ocpp"
+            / "ocpp_server.py"
+        ).read_text()
+        notify = source.split('@on("NotifyChargingLimit")')[1].split(
+            '@on("ClearedChargingLimit")'
+        )[0]
+        cleared = source.split('@on("ClearedChargingLimit")')[1]
+        for section in (notify, cleared):
+            self.assertNotIn("async_create_task", section)
+            self.assertIn("request_schedule_refresh", section)
+
+
 if __name__ == "__main__":
     unittest.main()

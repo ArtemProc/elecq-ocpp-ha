@@ -1,5 +1,11 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.1.1 – Telemetry correctness
+- Fixed Kelvin temperature normalization
+- Fixed fallback-location aggregation so readings from different probes are not mixed
+- Kept the last accepted schedule visible through a disconnect
+- Routed notification-driven schedule refreshes through the guarded poll loop
+
 ## v1.1.0 – Read-only telemetry
 - Added read-only current, voltage, frequency, temperature, and power-factor sensors
 - Added an `Effective Limit` sensor from the charger's composite schedule

@@ -30,7 +30,7 @@ from .const import (
     COMPOSITE_SCHEDULE_RETRY_INTERVAL,
     SIGNAL_STATE_UPDATED,
 )
-from .readings import find_value, normalize_meter_values
+from .readings import find_value, normalize_meter_values, select_effective_schedule
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -316,23 +316,25 @@ class ElecqOcppManager:
 
     @property
     def effective_schedule(self) -> Optional[dict[str, Any]]:
-        if (
-            self.state.composite_schedule is not None
-            and (self.state.composite_schedule_status or "").lower() == "accepted"
-        ):
-            return self.state.composite_schedule
-        return self.state.charging_limit_schedule
+        schedule, _ = select_effective_schedule(
+            self.state.composite_schedule,
+            self.state.composite_schedule_status,
+            self.state.charging_limit_schedule,
+        )
+        return schedule
 
     @property
     def effective_schedule_source(self) -> Optional[str]:
-        if (
-            self.state.composite_schedule is not None
-            and (self.state.composite_schedule_status or "").lower() == "accepted"
-        ):
-            return "CompositeSchedule"
-        if self.state.charging_limit_schedule is not None:
-            return "NotifyChargingLimit"
-        return None
+        _, source = select_effective_schedule(
+            self.state.composite_schedule,
+            self.state.composite_schedule_status,
+            self.state.charging_limit_schedule,
+        )
+        return source
+
+    def request_schedule_refresh(self) -> None:
+        """Wake the tracked poll loop instead of spawning an untracked task."""
+        self._schedule_wakeup.set()
 
     async def async_request_composite_schedule(self) -> Optional[dict[str, Any]]:
         if self._cp is None:
@@ -394,8 +396,11 @@ class ElecqOcppManager:
                     self._cp is not None
                     and self._connection_generation == generation
                 ):
-                    if not self.state.command_in_flight:
-                        await self.async_request_composite_schedule()
+                    if self.state.command_in_flight:
+                        await self._sleep_or_wake(1)
+                        continue
+
+                    await self.async_request_composite_schedule()
 
                     interval = (
                         COMPOSITE_SCHEDULE_POLL_INTERVAL
@@ -702,9 +707,7 @@ class ElecqChargePoint(OcppChargePointBase):
             st.charging_limit_schedule = None
         st.charging_limit_last_update = _now_iso()
         self._manager._notify()
-        self._manager.hass.async_create_task(
-            self._manager.async_request_composite_schedule()
-        )
+        self._manager.request_schedule_refresh()
         return call_result.NotifyChargingLimit()
 
     @on("ClearedChargingLimit")
@@ -720,7 +723,5 @@ class ElecqChargePoint(OcppChargePointBase):
         st.charging_limit_schedule = None
         st.charging_limit_last_update = _now_iso()
         self._manager._notify()
-        self._manager.hass.async_create_task(
-            self._manager.async_request_composite_schedule()
-        )
+        self._manager.request_schedule_refresh()
         return call_result.ClearedChargingLimit()

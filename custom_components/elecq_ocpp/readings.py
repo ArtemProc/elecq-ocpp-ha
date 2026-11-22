@@ -88,7 +88,7 @@ def _canonical_value(measurand: str, value: float, unit: str | None) -> tuple[fl
     if measurand == "Temperature":
         if unit == "Fahrenheit":
             return (value - 32.0) * 5.0 / 9.0, "Celsius"
-        if unit == "Kelvin":
+        if unit in ("Kelvin", "K"):
             return value - 273.15, "Celsius"
         if unit in (None, "", "Celsius"):
             return value, "Celsius"
@@ -169,8 +169,8 @@ def _preferred_location(entries: list[tuple[str, str, dict[str, Any]]], location
         entries,
         key=lambda item: (LOCATION_PRIORITY.get(item[1], 2), item[1]),
     )
-    best_rank = LOCATION_PRIORITY.get(ranked[0][1], 2)
-    return [item for item in ranked if LOCATION_PRIORITY.get(item[1], 2) == best_rank]
+    best_location = ranked[0][1]
+    return [item for item in ranked if item[1] == best_location]
 
 
 def find_value(
@@ -325,3 +325,17 @@ def effective_limit(
                 break
 
     return chosen["limit"], formatted, False
+
+
+def select_effective_schedule(
+    composite_schedule: dict[str, Any] | None,
+    composite_status: str | None,
+    fallback_schedule: dict[str, Any] | None,
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Choose the schedule to display, keeping the last accepted one through a disconnect."""
+    status = (composite_status or "").lower()
+    if composite_schedule is not None and status in {"accepted", "disconnected"}:
+        return composite_schedule, "CompositeSchedule"
+    if fallback_schedule is not None:
+        return fallback_schedule, "NotifyChargingLimit"
+    return None, None
