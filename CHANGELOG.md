@@ -1,5 +1,8 @@
 # Changelog – Elecq AU101 OCPP Integration
 
+## v1.0.5 – Branding
+- Removed BashTheDog branding from the integration badge image
+
 ## v1.0.4 – Dashboard
 - Added a ready-to-paste dashboard using only built-in Home Assistant cards
 - Corrected the documented entity IDs
