@@ -1,0 +1,79 @@
+title: Elecq Charger
+views:
+  - title: Charger
+    path: charger
+    icon: mdi:ev-station
+    type: sections
+    max_columns: 2
+    sections:
+      - type: grid
+        column_span: 1
+        cards:
+          - type: heading
+            heading: Elecq Charger
+            icon: mdi:ev-station
+            heading_style: title
+          - type: gauge
+            entity: sensor.elecq_au101_charger_power
+            name: Power now
+            unit: kW
+            min: 0
+            max: 22
+            needle: true
+          - type: tile
+            entity: sensor.elecq_au101_charger_info
+            name: Charging state
+            icon: mdi:state-machine
+          - type: tile
+            entity: switch.elecq_au101_charger_remote_charging
+            name: Remote charging
+            icon: mdi:power-plug
+            features:
+              - type: toggle
+      - type: grid
+        column_span: 1
+        cards:
+          - type: heading
+            heading: Details
+            icon: mdi:information-outline
+            heading_style: subtitle
+          - type: tile
+            entity: sensor.elecq_au101_charger_charger_status
+            name: Charger status
+            icon: mdi:ev-station
+          - type: tile
+            entity: binary_sensor.elecq_au101_charger_plugged_in
+            name: Plugged in
+            icon: mdi:ev-plug-type2
+          - type: tile
+            entity: binary_sensor.elecq_au101_charger_charging
+            name: Charging
+            icon: mdi:battery-charging
+          - type: tile
+            entity: sensor.elecq_au101_charger_session_energy
+            name: Session energy
+            icon: mdi:counter
+          - type: tile
+            entity: sensor.elecq_au101_charger_total_energy
+            name: Total energy
+            icon: mdi:sigma
+          - type: tile
+            entity: sensor.elecq_au101_charger_power_smoothed
+            name: Smoothed power
+            icon: mdi:chart-line-variant
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Power history
+            icon: mdi:chart-line
+            heading_style: subtitle
+          - type: history-graph
+            title: Power · last 24 hours
+            hours_to_show: 24
+            min_y_axis: 0
+            entities:
+              - entity: sensor.elecq_au101_charger_power
+                name: Power
+              - entity: sensor.elecq_au101_charger_power_smoothed
+                name: Smoothed
